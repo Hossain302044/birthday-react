@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import List from './List';
 
 function App() {
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => setdata(data))
+  }, [])
+  console.log(data.length);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <main className='full-body'>
+        <section className='container'>
+          <h2 className='text-title'>{data.length} Birthday Today's</h2>
+          {
+            data.map(d => <List
+              key={d.id}
+              d={d}
+            ></List>)
+          }
+          <button className='btn btn-primary' onClick={() => setdata([])}>Clear All</button>
+        </section>
+      </main>
+    </>
   );
 }
 
